@@ -1,0 +1,1224 @@
+{
+	"info": {
+		"_postman_id": "839ce586-7e6d-4cf9-8e4e-82b8eebd84e5",
+		"name": "Diprello_collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "BDD Copy",
+			"item": [
+				{
+					"name": "postman bdd",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6d84352e-e9ea-4d8e-b563-d56d230dd0c4",
+								"exec": [
+									"postman.setGlobalVariable('postmanBDD', responseBody);\r"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://bigstickcarpet.com/postman-bdd/dist/postman-bdd.min.js"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"item": [
+				{
+					"name": "Sign up new user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "899039b4-904c-4eed-ae01-b27bd38c0ad9",
+								"exec": [
+									"eval(globals.postmanBDD); \r",
+									"\r",
+									"postman.setEnvironmentVariable(\"token\", response.body.token);\r",
+									"postman.setEnvironmentVariable(\"email\", response.body.email);\r",
+									"postman.setEnvironmentVariable(\"user-id\", response.body.id)\r",
+									"\r",
+									"describe('Get user info', () =>{\r",
+									"    it('should return a valid response', ()=> {\r",
+									"        response.should.have.status(200),\r",
+									"        response.should.be.json,\r",
+									"        response.body.should.not.be.empty;\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "Name",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "uhavir.{{$randomInt}}@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": " last name",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "terms",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{url}}/sign_up"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1938e617-3226-40f2-8306-6da59d1124d2",
+								"exec": [
+									"eval(globals.postmanBDD); \r",
+									"\r",
+									"postman.setEnvironmentVariable(\"token\", response.body.token);\r",
+									"id = postman.getEnvironmentVariable('user-id');\r",
+									"\r",
+									"describe('Get user info', () =>{\r",
+									"    it('should return user id', () =>{\r",
+									"        responseUserId = JSON.stringify(response.body.id);\r",
+									"        responseUserId.should.equal(id);\r",
+									"        response.body.first_name.should.be.a('string').and.not.empty,\r",
+									"        response.body.last_name.should.be.oneOf(['last name', 'Jones', 'Robinson']);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"postman.setGlobalVariable(\"СommonTestsForSuccessfullResponce\", () => { \r",
+									"    it('Common Case 1: should return one of success responceswith 200, 201 or 202 status code', () => { \r",
+									"        response.status.should.be.oneOf([201, 200, 202]); \r",
+									"    }); \r",
+									"    it('Common Case 2: should return a JSON response', () => { \r",
+									"        response.should.be.json;\r",
+									"    }); \r",
+									"    it('Common Case 3: should return OK message in response', () => {\r",
+									"        response.ok.should.be.true;\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"eval(globals.СommonTestsForSuccessfullResponce)();\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3129e182-9b3c-4abb-8770-79aa99231e5e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": "https://demo.diprella.com/api/login"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "create course",
+			"item": [
+				{
+					"name": "course",
+					"item": [
+						{
+							"name": "create course",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6cf75fa9-6190-4b86-9336-f0e2db542b86",
+										"exec": [
+											"// eval(globals.postmanBDD);\r",
+											"\r",
+											"// NewCourseID = postman.setEnvironmentVariable(\"course_id\", response.body.id);\r",
+											"\r",
+											"// var schema = \r",
+											"//     {\r",
+											"//         \"items\": {\r",
+											"//             \"id\": {\r",
+											"//                 \"type\": \"string\"\r",
+											"//                 }\r",
+											"//         }\r",
+											"//     };\r",
+											"\r",
+											"// describe('Get customer info', () => {\r",
+											"//     it('Test 1: should return valid Responce schema', () => {\r",
+											"//         tv4.validate(response.body, schema).should.be.true;\r",
+											"//     });\r",
+											"// });\r",
+											"\r",
+											"// describe('Successfull course ID exist', () => {\r",
+											"//     it('Test should check that new id is not in the current created courses list', () => {\r",
+											"//         response.body.id.should.not.be.oneOf(new Array('courseIDs'));\r",
+											"//     });\r",
+											"// });\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"var testID = environment.course_id\r",
+											"\r",
+											"pm.test(\"ID exist in array\", function () {\r",
+											" var i=0;\r",
+											" for(i; i<jsonData.length; i++) {\r",
+											"     pm.expect(jsonData).to.have.property(jsonData[i].testID, testID);\r",
+											"     }\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Check the Course exists and correct\", function () {\r",
+											"    var courseTitle = jsonData.map(\r",
+											"            function(index) {\r",
+											"                return index.title;\r",
+											"            }\r",
+											"        ).indexOf('Api course'); \r",
+											"\r",
+											"    var course = jsonData[courseTitle];\r",
+											"    pm.expect(course).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"// if(privacies && privacies.length > 0) {\r",
+											"//     postman.setNextRequest('Create Course');\r",
+											"    \r",
+											"//     } else {\r",
+											"//     \tpostman.setNextRequest(null);\r",
+											"// \t}\r",
+											"\r",
+											"// pm.test(\"Successful Course ID exists\", function () {\r",
+											"//     pm.expect(response.id).not.to.be.oneOf(pm.environment.get(\"courseIDs\"));\r",
+											"// });\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "370df499-fb7a-4f9a-be27-148ee5adfe67",
+										"exec": [
+											"var privacies = pm.environment.get(\"privacies\");\r",
+											"\r",
+											"if(!privacies) {\r",
+											"    privacies = [\"public\", \"private\", \"protected\"];\r",
+											"    } else if(privacies.length == 0) {\r",
+											"\t   privacies = [\"public\", \"private\", \"protected\"]; \r",
+											"\t}\r",
+											"\t\r",
+											"var currentPrivacy = privacies.shift();\r",
+											"\r",
+											"pm.environment.set(\"privacy\", currentPrivacy);\r",
+											"pm.environment.set(\"privacies\", privacies);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Api course ",
+											"type": "text"
+										},
+										{
+											"key": "privacy",
+											"value": "{{privacy}}",
+											"type": "text"
+										},
+										{
+											"key": "level",
+											"value": "intermediate",
+											"type": "text"
+										},
+										{
+											"key": "category",
+											"value": "Development",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/course/create"
+							},
+							"response": []
+						},
+						{
+							"name": "create course category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f13fa0e5-7285-42f0-ae98-c5ee6a695a42",
+										"exec": [
+											"eval(globals.postmanBDD);",
+											"eval(globals.СommonTestsForSuccessfullResponce)();"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name_category",
+											"value": "testing",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/category/create"
+							},
+							"response": []
+						},
+						{
+							"name": "get course list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bf1bb547-3185-4be9-921e-f4b88ed9f0af",
+										"exec": [
+											"// var jsonData = JSON.parse(responseBody);",
+											"// courseIDs =[];",
+											"",
+											"// jsonData.forEach(function(post) {",
+											"//     courseIDs.add(post.id);",
+											"// });",
+											"",
+											"// // pm.environment.set(\"courseIDs\", courseIDs);",
+											"var jsonData = pm.response.json();",
+											"",
+											"pm.test(\"Check the Course exists and correct\", function () {",
+											"    var courseTitle = jsonData.map(",
+											"            function(index) {",
+											"                return index.title;",
+											"            }",
+											"        ).indexOf('API testing course'); ",
+											"",
+											"    var course = jsonData[courseTitle];",
+											"    pm.expect(course).to.exist;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{user_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": "{{url}}/courses/list"
+							},
+							"response": []
+						},
+						{
+							"name": "get category list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "02b19208-2a02-4684-aa58-91ce1b12b57c",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"categoryIDs = [];",
+											"",
+											"jsonData.forEach(function(post) {",
+											"    categoryIDs.add(post.industry_id)",
+											"});",
+											"pm.environment.set(\"categoryIDs\",  JSON.stringify(categoryIDs));",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": "{{url}}/industries/list"
+							},
+							"response": []
+						},
+						{
+							"name": "get category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9cb7ecba-30bf-4455-99b2-192f0ccc0243",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/category/get?category=development",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"category",
+										"get"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "development"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update course",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b39199d6-3dc7-464f-90b1-b8128df5527c",
+										"exec": [
+											"eval(globals.postmanBDD);",
+											"",
+											"describe('Verify status is true', () => {",
+											"    it('should return status true in response body', () => {",
+											"        response.body.status.should.be.true;",
+											"    });",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "<p> We are going to learn how to use Postman to test api endpoints.</p>",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "API testing course",
+											"type": "text"
+										},
+										{
+											"key": "privacy",
+											"value": "private",
+											"type": "text"
+										},
+										{
+											"key": "date_start",
+											"value": "2019-03-12",
+											"type": "text"
+										},
+										{
+											"key": "date_stop",
+											"value": "2019-04-14",
+											"type": "text"
+										},
+										{
+											"key": "image_cover",
+											"type": "file",
+											"src": ""
+										},
+										{
+											"key": "industry_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "category_id",
+											"value": "65",
+											"type": "text"
+										}
+									]
+								},
+								"url": "https://demo.diprella.com/api/dashboard/settings/update"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "module",
+					"item": [
+						{
+							"name": "create new module",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "63f060f1-9744-446f-800e-34b82d596b6b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "new lecture ",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/course/module/create"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "article",
+					"item": [
+						{
+							"name": "create lecture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "55d76d16-55c4-4182-a0af-d27ee6143461",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"lecture_id\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "new lecture",
+											"type": "text"
+										},
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "module_id",
+											"value": "{{module_id}}",
+											"type": "text"
+										},
+										{
+											"key": "expected_time",
+											"value": "5400",
+											"type": "text"
+										},
+										{
+											"key": "article",
+											"value": "<p>test lecture<p>",
+											"type": "text"
+										}
+									]
+								},
+								"url": "https://demo.diprella.com/api/article/create"
+							},
+							"response": []
+						},
+						{
+							"name": "create article from list",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"article_param\": [\n        {\n            \"course_id\": \"{{course_id}}\",\n            \"module_id\": \"{{module_id}}\",\n            \"article_id\": {{lecture_id}}\n        }\n    ]\n}"
+								},
+								"url": "{{url}}/list/article/create"
+							},
+							"response": []
+						},
+						{
+							"name": "get article list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "176935b3-3c1e-4d93-bb65-b0f2379018d9",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": "{{url}}/profile/article/list"
+							},
+							"response": []
+						},
+						{
+							"name": "get article",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "22f8010a-5c74-4977-9a4b-07876543a6a0",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"article_id\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://demo.diprella.com/api/article/get?course_id={{course_id}}&module_id={{module_id}}&article_id=262",
+									"protocol": "https",
+									"host": [
+										"demo",
+										"diprella",
+										"com"
+									],
+									"path": [
+										"api",
+										"article",
+										"get"
+									],
+									"query": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}"
+										},
+										{
+											"key": "module_id",
+											"value": "{{module_id}}"
+										},
+										{
+											"key": "article_id",
+											"value": "262"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "quiz",
+					"item": [
+						{
+							"name": "create new quiz",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a403dca7-bd50-4d08-b34b-104f729450f7",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"quiz_id\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "module_id",
+											"value": "{{module_id}}",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "name of test",
+											"type": "text"
+										},
+										{
+											"key": "date_from",
+											"value": "2019-03-14",
+											"type": "text"
+										},
+										{
+											"key": "date_to",
+											"value": "2019-12-11",
+											"type": "text"
+										},
+										{
+											"key": "difficulty",
+											"value": "beginner",
+											"type": "text"
+										},
+										{
+											"key": "detailed_result",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "time_limit",
+											"value": "300",
+											"type": "text"
+										},
+										{
+											"key": "attempts",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "order_question",
+											"value": "random",
+											"type": "text"
+										},
+										{
+											"key": "answer_count",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "point",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "test description 1",
+											"type": "text"
+										},
+										{
+											"key": "question[]",
+											"value": "Please describe yourself",
+											"type": "text"
+										},
+										{
+											"key": "question[]",
+											"value": "choose true number value",
+											"type": "text"
+										},
+										{
+											"key": "q_point",
+											"value": "10",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/quiz/create"
+							},
+							"response": []
+						},
+						{
+							"name": "get question quiz",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/quiz/question/get?course_id={{url}}&module_id={{module_id}}&quiz_id={{quiz}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"quiz",
+										"question",
+										"get"
+									],
+									"query": [
+										{
+											"key": "course_id",
+											"value": "{{url}}"
+										},
+										{
+											"key": "module_id",
+											"value": "{{module_id}}"
+										},
+										{
+											"key": "quiz_id",
+											"value": "{{quiz}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "webinar/event",
+					"item": [
+						{
+							"name": "create webinar event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "93cda84a-8ec4-4f6e-a4c0-1768421d7bcd",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"webinar_id\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "module_id",
+											"value": "{{module_id}}",
+											"type": "text"
+										},
+										{
+											"key": "email_lecturer",
+											"value": "{{email}}",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "name of the webinar",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "<p>test basic</p>",
+											"type": "text"
+										},
+										{
+											"key": "date_from",
+											"value": "2019-03-15",
+											"type": "text"
+										},
+										{
+											"key": "start_time",
+											"value": "17:00:00",
+											"type": "text"
+										},
+										{
+											"key": "duration",
+											"value": "2700",
+											"type": "text"
+										},
+										{
+											"key": "timezone_region",
+											"value": "Europe/Kiev",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "webinar",
+											"type": "text"
+										},
+										{
+											"key": "timezone",
+											"value": "UTC +02:00",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/event/create"
+							},
+							"response": []
+						},
+						{
+							"name": "delete webinar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "module_id",
+											"value": "{{module_id}}",
+											"type": "text"
+										},
+										{
+											"key": "event_id",
+											"value": "{{webinar_id}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": "https://demo.diprella.com/api/course/event/delete"
+							},
+							"response": []
+						},
+						{
+							"name": "create event webinar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2bb44953-9726-4854-9559-16afea734b71",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"event_id\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": null,\n    \"course_id\": \"{{course_id}}\",\n    \"module_id\": \"{{module_id}}\",\n    \"email_lecturer\": \"{{email}}\",\n    \"title\": \"name of new webinar\",\n    \"timezone\": \"UTC +02:00\",\n    \"default_time_zone\": null,\n    \"type\": \"webinar\",\n    \"description\": \"<p>test</p>\",\n    \"date_from\": \"2019-03-21\",\n    \"start_time\": \"00:00:00\",\n    \"duration\": 1800,\n    \"chat\": 1,\n    \"max_viewers\": 15,\n    \"files_id\": [],\n    \"image_cover\": null,\n    \"timezone_region\": \"Europe/Kiev\"\n}"
+								},
+								"url": "https://demo.diprella.com/api/event/create"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "postman bdd",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6d84352e-e9ea-4d8e-b563-d56d230dd0c4",
+						"exec": [
+							"postman.setGlobalVariable('postmanBDD', responseBody);\r"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "http://bigstickcarpet.com/postman-bdd/dist/postman-bdd.min.js"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e23aa64f-77e5-4827-9420-c5355d1a1260",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0a3e5eae-169f-4d3d-b532-3f2a44483e03",
+				"type": "text/javascript",
+				"exec": [
+					"eval(globals.postmanBDD);",
+					"",
+					"postman.setGlobalVariable(\"СommonTestsForSuccessfullResponce\", () => { ",
+					"    it('Common Case 1: should return one of success responceswith 200, 201 or 202 status code', () => { ",
+					"        response.status.should.be.oneOf([201, 200, 202]); ",
+					"    }); ",
+					"    it('Common Case 2: should return a JSON response', () => { ",
+					"        response.should.be.json; ",
+					"    }); ",
+					"    it('Common Case 3: should return OK message in response', () => {",
+					"        response.ok.should.be.true;",
+					"    });",
+					"});"
+				]
+			}
+		}
+	]
+}
